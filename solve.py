@@ -5,6 +5,7 @@ import urllib.request
 import request
 import parse
 import solver
+from getpass import getpass
 
 argp = argparse.ArgumentParser()
 argp.add_argument('-u', '--user', type=str)
@@ -13,20 +14,25 @@ argp.add_argument('-n', '--runs', type=int)
 args = argp.parse_args()
 
 nruns = 1
-
+user = None
+password = None
 
 if(args.runs):
     nruns = args.runs
+user = args.user
+password = args.password
 
-#session = request.get_session()
-#session = request.login('username', 'password')
-session = 'sessioncookie'
-print(session)
+if(not user):
+    user = input('Username: ')
+if(not password):
+    password = getpass('Password: ')
+
+session = request.login(user, password)
 
 hit_rate = 0
 
 for i in range(nruns):
-    data = request.get_questions(session)
+    data = request.get_questions()
     parser = parse.QuestionPageParser()
     parser.feed(data);
 
@@ -38,7 +44,7 @@ for i in range(nruns):
             hit_rate_round += 1 / len(parser.questions)
 
 
-    data = request.send_solution(parser.submit_url, session, parser.questions,
+    data = request.send_solution(parser.submit_url, parser.questions,
         parser.hidden_data)
 
     parser = parse.SolutionPageParser()
