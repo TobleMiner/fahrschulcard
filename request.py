@@ -5,7 +5,7 @@ from question import Question
 
 cj = http.cookiejar.CookieJar()
 
-base_url = 'http://fahrschulcard.de/'
+base_url = 'https://fahrschulcard.de/'
 useragent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36'
 
 def cj_to_dict(jar):
