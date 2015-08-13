@@ -27,11 +27,12 @@ if(not user):
 if(not password):
     password = getpass('Password: ')
 
-session = request.login(user, password)
-
 hit_rate = 0
 
 for i in range(nruns):
+    if(not request.check_login()):
+        print("Session invalid. Logging in")
+        request.login(user, password)
     data = request.get_questions()
     parser = parse.QuestionPageParser()
     parser.feed(data);

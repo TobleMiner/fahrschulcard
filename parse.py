@@ -160,3 +160,15 @@ class SolutionPageParser(HTMLParser):
                 return
             self.current_answer.answer = data
             self.capture_answer_data = False
+
+class LoginPageParser(HTMLParser):
+    def __init__(self):
+        super(LoginPageParser, self).__init__()
+        self.login = True
+    def handle_starttag(self, tag, attrs):
+        dict = {}
+        for value in attrs:
+            dict[value[0]] = value[1]
+        attrs = dict
+        if(tag == 'div' and 'id' in attrs and attrs['id'] == 'failures'):
+            self.login = False

@@ -2,6 +2,7 @@ import urllib.request
 import urllib.parse
 import http.cookiejar
 from question import Question
+from parse import LoginPageParser
 
 cj = http.cookiejar.CookieJar()
 
@@ -37,6 +38,12 @@ def get(url, headers={}):
         opener.addheaders.append((key, value))
     with opener.open(url) as f:
         return f.read().decode('utf-8')
+
+def check_login():
+    url = urllib.parse.urljoin(base_url, '/de/fsc.html?id=fsc&view=view_bogen')
+    parser = LoginPageParser()
+    parser.feed(get(url))
+    return parser.login
 
 def get_questions():
     url = urllib.parse.urljoin(base_url, '/de/fsc.html?id=fsc&view=view_bogen')
